@@ -29,7 +29,8 @@ ui <- fluidPage(
     tabPanel(
       title = "Reference",
       h4("Data were obtained from"), 
-      tags$a(href = "https://extension.oregonstate.edu/sites/default/files/documents/12281/soiltemps.pdf", "https://extension.oregonstate.edu/sites/default/files/documents/12281/soiltemps.pdf"),
+      tags$a(href = "https://extension.oregonstate.edu/sites/default/files/documents/12281/soiltemps.pdf", 
+             "https://extension.oregonstate.edu/sites/default/files/documents/12281/soiltemps.pdf"),
       br(),
       br(),
       h4("This app was created using"),
@@ -43,12 +44,16 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
+  
+  # search by temperature
   output$soil_input_table <- renderTable({
     req(input$soiltemp)
     
-    # get germination times
+    # get germination times using reference temp closest to input temp 
+    # (ref temps are 9 degrees apart, so use ref temp +/- 4 from input temp)
     nearest_ref_temp <- germination %>% 
-      filter(((germination$ref_temp - 4) <= input$soiltemp) & ((germination$ref_temp + 4) >= input$soiltemp))
+      filter(((germination$ref_temp - 4) <= input$soiltemp) & 
+               ((germination$ref_temp + 4) >= input$soiltemp))
     
     soil_temp_data %>% 
       filter(opt_min <= input$soiltemp & opt_max >= input$soiltemp) %>% 
@@ -59,6 +64,7 @@ server <- function(input, output) {
       rename("Approx. germination time (days)" = germ_time)
   })
 
+  # search by crop
   output$crop_input_table <- renderTable({
     
     soil_temp_data %>% 

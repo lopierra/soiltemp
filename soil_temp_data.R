@@ -5,8 +5,10 @@ library(tidyverse)
 library(tabulizer)
 library(here)
 
-# Use tabulizer package to extract table from PDF (first saved as a file from https://extension.oregonstate.edu/sites/default/files/documents/12281/soiltemps.pdf)
+# Use tabulizer package to extract table from PDF (first saved as a file from 
+# https://extension.oregonstate.edu/sites/default/files/documents/12281/soiltemps.pdf)
 # [in future could also use `download.file` to get the PDF directly from the website]
+
 # Output will be a data frame, but as a the first element in a list -> needs to be subsetted
 
 soil_temp_data <- extract_tables(here("oregonstate.pdf"), pages = 1, output = "data.frame") %>% 
