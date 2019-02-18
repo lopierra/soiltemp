@@ -25,7 +25,7 @@ soil_temp_data <- select(soil_temp_data, -min, -max)
 
 # Split the opt_range column into 2
 
-soil_temp_data <- separate(soil_temp_data, opt_range, sep = "-", c("opt_min", "opt_max"))
+soil_temp_data <- separate(soil_temp_data, opt_range, remove = F, sep = "-", c("opt_min", "opt_max"))
 
 # Get germination data from page 2 of PDF
 

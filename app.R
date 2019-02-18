@@ -57,8 +57,8 @@ server <- function(input, output) {
     
     soil_temp_data %>% 
       filter(opt_min <= input$soiltemp & opt_max >= input$soiltemp) %>% 
-      select(crop, opt_temp) %>% 
-      rename(Crop = crop, "Optimal temp (F)" = opt_temp) %>% 
+      select(crop, opt_temp, opt_range) %>% 
+      rename(Crop = crop, "Optimal temp (F)" = opt_temp, "Optimal temp range (F)" = opt_range) %>% 
       left_join(nearest_ref_temp, by = "Crop") %>% 
       select(-ref_temp) %>% 
       rename("Approx. germination time (days)" = germ_time)
@@ -68,7 +68,8 @@ server <- function(input, output) {
   output$crop_input_table <- renderTable({
     
     soil_temp_data %>% 
-      filter(crop %in% input$veg) %>% 
+      filter(crop %in% input$veg) %>%
+      select(-opt_range) %>% 
       rename(Crop = crop, "Min. temp" = opt_min, "Max. temp" = opt_max, "Optimal temp" = opt_temp)
   })
   
